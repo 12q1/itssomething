@@ -38,21 +38,24 @@ io.on('connection', function(socket) {
     socket.on('movement', function(data) {
       var player = players[socket.id] || {};
       if (data.left) {
-        player.x -= 5;
+        player.x -= 7;
       }
       if (data.up) {
-        player.y -= 5;
+        player.y -= 7;
       }
       if (data.right) {
-        player.x += 5;
+        player.x += 7;
       }
       if (data.down) {
-        player.y += 5;
+        player.y += 7;
       }
     });
     socket.on('disconnect',function(){
-      delete players[socketIO];
-    })//removes players after disconnect
+      socket.emit('user disconnected', socket.id)
+      console.log(players[socket.id])
+      console.log(players)
+      delete players[socket.id];
+    })//removes players after disconnect this is a json object, array functions don't work
   });
   setInterval(function() {
     io.sockets.emit('state', players);

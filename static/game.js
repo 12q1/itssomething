@@ -45,21 +45,22 @@ document.addEventListener('keyup', function (event) {
 });
 
 socket.emit('new player');
-setInterval(function() {
-  socket.emit('movement', movement);
+setInterval(function () {
+    socket.emit('movement', movement);
 }, 1000 / 60);
 
 var canvas = document.getElementById('canvas');
 canvas.width = 1000;
 canvas.height = 600;
 var context = canvas.getContext('2d');
-socket.on('state', function(players) {
-  context.clearRect(0, 0, 1000, 600);
-  context.fillStyle = 'white';
-  for (var id in players) {
-    var player = players[id];
-    context.beginPath();
-    context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-    context.fill();
-  }
+socket.on('state', function (players) {
+    console.log(players)
+    context.clearRect(0, 0, 1000, 600);
+    context.fillStyle = 'white';
+    for (var id in players) {
+        var player = players[id];
+        context.beginPath();
+        context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+        context.fill();
+    }
 });
