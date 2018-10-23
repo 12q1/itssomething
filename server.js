@@ -32,28 +32,27 @@ io.on('connection', function(socket) {
     socket.on('new player', function() {
       players[socket.id] = {
         x: 500,
-        y: 300
+        y: 300 //these coordinates are the starting position of a player
       };
     });
     socket.on('movement', function(data) {
       var player = players[socket.id] || {};
-      if (data.left) {
-        player.x -= 7;
+      if (data.left&&player.x>10) {
+        console.log(player)
+        player.x -= 7; //these numbers control movement speed higher = faster
       }
-      if (data.up) {
+      if (data.up&&player.y>12) {
         player.y -= 7;
       }
-      if (data.right) {
+      if (data.right&&player.x<990) {
         player.x += 7;
       }
-      if (data.down) {
+      if (data.down&&player.y<588) {
         player.y += 7;
       }
     });
     socket.on('disconnect',function(){
       socket.emit('user disconnected', socket.id)
-      console.log(players[socket.id])
-      console.log(players)
       delete players[socket.id];
     })//removes players after disconnect this is a json object, array functions don't work
   });

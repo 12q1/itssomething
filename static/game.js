@@ -12,7 +12,7 @@ var movement = {
 
 document.addEventListener('keydown', function (event) {
     switch (event.keyCode) {
-        case 65: // A
+        case 65 : // A
             movement.left = true;
             break;
         case 87: // W
@@ -22,6 +22,18 @@ document.addEventListener('keydown', function (event) {
             movement.right = true;
             break;
         case 83: // S
+            movement.down = true;
+            break;
+        case 39: //right arrow
+            movement.right = true;
+            break;
+        case 37: //left arrow
+            movement.left = true;
+            break;
+        case 38: //up arrow
+            movement.up = true;
+            break;
+        case 40: //down arrow
             movement.down = true;
             break;
     }
@@ -41,6 +53,18 @@ document.addEventListener('keyup', function (event) {
         case 83: // S
             movement.down = false;
             break;
+        case 39: //right arrow
+            movement.right = false;
+            break;
+        case 37: //left arrow
+            movement.left = false;
+            break;
+        case 38: //up arrow
+            movement.up = false;
+            break;
+        case 40: //down arrow
+            movement.down = false;
+            break;
     }
 });
 
@@ -54,7 +78,8 @@ canvas.width = 1000;
 canvas.height = 600;
 var context = canvas.getContext('2d');
 socket.on('state', function (players) {
-    console.log(players)
+    //us this console.log if you need to check the player list on client
+    //console.log(players)
     context.clearRect(0, 0, 1000, 600);
     context.fillStyle = 'white';
     for (var id in players) {
