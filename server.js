@@ -21,15 +21,17 @@ server.listen(process.env.PORT || 5000, function() {
 io.on('connection', function(socket) {
 });
 
-setInterval(function() {
-    io.sockets.emit('message', 'hi!');
-  }, 1000);
+// Just leaving this here in case we need it later
+
+// setInterval(function() {
+//     io.sockets.emit('testing connection please ignore');
+//   }, 1000);
 
   var players = {};
   io.on('connection', function(socket) {
     socket.on('new player', function() {
       players[socket.id] = {
-        x: 300,
+        x: 500,
         y: 300
       };
     });
@@ -48,6 +50,9 @@ setInterval(function() {
         player.y += 5;
       }
     });
+    socket.on('disconnect',function(){
+      delete players[socketIO];
+    })//removes players after disconnect
   });
   setInterval(function() {
     io.sockets.emit('state', players);
