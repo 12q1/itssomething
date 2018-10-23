@@ -32,7 +32,7 @@ const getRandomNumber = (max) => {
 } //end of getRandomNumber: use this to generate a random integer, define the maximum in the parameter
 
 
-playerColors=["red","green","yellow","blue"]
+playerColors=["red","white","yellow","blue","black","orange"]
 
 var players = {};
 io.on('connection', function (socket) {
