@@ -80,12 +80,14 @@ var context = canvas.getContext('2d');
 socket.on('state', function (players) {
     //us this console.log if you need to check the player list on client
     //console.log(players)
-    context.clearRect(0, 0, 1000, 600);
-    context.fillStyle = 'white';
+    context.clearRect(0, 0, 1000, 600); //removes trails
     for (var id in players) {
         var player = players[id];
+        context.fillStyle = player.color;
         context.beginPath();
+        console.log(player)
         context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
         context.fill();
+        context.filter = 'blur(1px)';
     }
 });
