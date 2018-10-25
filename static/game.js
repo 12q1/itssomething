@@ -1,6 +1,6 @@
 var socket = io();
 socket.on('message', function (data) {
-    console.log(data);
+    console.table(data);
 });
 
 var movement = {
@@ -86,8 +86,7 @@ socket.on('state', function (players) {
         context.fillStyle = player.color;
         context.beginPath();
         console.log(player)
-        context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+        context.rect(player.x, player.y, 15, 15);
         context.fill();
-        context.filter = 'blur(1px)';
     }
 });

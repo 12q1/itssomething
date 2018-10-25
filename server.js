@@ -40,22 +40,26 @@ io.on('connection', function (socket) {
     players[socket.id] = {
       x: 500,
       y: 300, //these coordinates are the starting position of a player
-      color: playerColors[getRandomNumber(playerColors.length)]
+      color: playerColors[getRandomNumber(playerColors.length)],
+      infected:false
     };
-    console.log(players[socket.id].color)
   });
+  socket.on('collision',function(){
+    console.log(players)
+  })
+
   socket.on('movement', function (data) {
     var player = players[socket.id] || {};
-    if (data.left && player.x > 10) {
+    if (data.left && player.x > 0) {
       player.x -= 7; //these numbers control movement speed higher = faster
     }
-    if (data.up && player.y > 12) {
+    if (data.up && player.y > 0) {
       player.y -= 7;
     }
-    if (data.right && player.x < 990) {
+    if (data.right && player.x < 985) {
       player.x += 7;
     }
-    if (data.down && player.y < 588) {
+    if (data.down && player.y < 585) {
       player.y += 7;
     }
   });
