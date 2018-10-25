@@ -18,8 +18,7 @@ server.listen(process.env.PORT || 5000, function () {
 });
 
 // Add the WebSocket handlers
-io.on('connection', function (socket) {
-});
+io.on('connection', function (socket) {});
 
 // Just leaving this here in case we need it later
 
@@ -40,7 +39,7 @@ io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
       socket: socket.id,
-      name: "player"+number++,
+      name: "player" + number++,
       x: getRandomNumber(800),
       y: getRandomNumber(400), //these coordinates are the starting position of a player
       color: playerColors[getRandomNumber(playerColors.length)],
@@ -67,10 +66,10 @@ io.on('connection', function (socket) {
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
       for (i = 0; i < dataArray.length; i++) { //for each index of dataArray 
-        if (player.x+playerSize > dataArray[i].x && player.x < dataArray[i].x + playerSize && socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
-          if (player.y+playerSize > dataArray[i].y && player.y < dataArray[i].y + playerSize && socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
+        if (player.x + playerSize > dataArray[i].x && player.x < dataArray[i].x + playerSize && socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
+          if (player.y + playerSize > dataArray[i].y && player.y < dataArray[i].y + playerSize && socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
             console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
-            if(player.infected===false&&socketArray[i].infected===true){
+            if (player.infected === false && dataArray[i].infected === true) {
               player.infected = true
               player.color = 'red'
             }
@@ -81,7 +80,7 @@ io.on('connection', function (socket) {
   });
   socket.on('disconnect', function () {
     delete players[socket.id];
-  })//removes players after disconnect this is a json object, array functions don't work
+  }) //removes players after disconnect this is a json object, array functions don't work
 });
 setInterval(function () {
   io.sockets.emit('state', players);
