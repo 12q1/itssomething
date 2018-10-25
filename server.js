@@ -87,7 +87,7 @@ io.on('connection', function (socket) {
             console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
             if (player.infected === false && dataArray[i].infected === true) {
               player.infected = true
-              player.color = 'DarkRed'
+              player.color = 'Tomato'
             }
           }
         }
