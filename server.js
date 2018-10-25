@@ -18,8 +18,7 @@ server.listen(process.env.PORT || 5000, function () {
 });
 
 // Add the WebSocket handlers
-io.on('connection', function (socket) {
-});
+io.on('connection', function (socket) {});
 
 // Just leaving this here in case we need it later
 
@@ -36,11 +35,13 @@ playerColors = ["white", "yellow", "blue", "black", "orange"]
 
 var players = {};
 var number = 0
+var pId=1
 io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
       socket: socket.id,
       name: "player" + number++,
+      pid:pId++,
       x: getRandomNumber(800),
       y: getRandomNumber(400), //these coordinates are the starting position of a player
       color: playerColors[getRandomNumber(playerColors.length)],
@@ -51,20 +52,23 @@ io.on('connection', function (socket) {
   socket.on('movement', function (data) {
     var player = players[socket.id] || {};
     if (data.left && player.x > 0) { //these numbers control movement speed higher = faster 
-      if (player.infected === true) player.x -= 7; //infected move at a speed of 7 non-infected move at a speed of 5
-      player.x -= 5;
+      if (player.infected === true){
+        player.x -= 7 
+      }
+       //infected move at a speed of 7 non-infected move at a speed of 5
+      else {player.x -= 2}
     }
     if (data.up && player.y > 0) {
-      if (player.infected === true) player.y -= 7;
-      player.y -= 5;
+      if (player.infected === true) return  player.y -= 7;
+      else player.y -= 2;
     }
     if (data.right && player.x < 985) {
-      if (player.infected === true) player.x += 7;
-      player.x += 5;
+      if (player.infected === true) return player.x += 7;
+      else player.x += 2;
     }
     if (data.down && player.y < 585) {
-      if (player.infected === true) player.y += 7;
-      player.y += 5;
+      if (player.infected === true) return  player.y += 7;
+      else player.y += 2;
     }
     if (players) { //if players exist
       playerSize = 15 //define player size
@@ -72,8 +76,12 @@ io.on('connection', function (socket) {
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
       
       for (i = 0; i < dataArray.length; i++) { //for each index of dataArray 
-        if (player.x + playerSize > dataArray[i].x && player.x < dataArray[i].x + playerSize && socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
-          if (player.y + playerSize > dataArray[i].y && player.y < dataArray[i].y + playerSize && socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
+        if (player.x + playerSize > dataArray[i].x &&
+          player.x < dataArray[i].x + playerSize &&
+          socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
+          if (player.y + playerSize > dataArray[i].y &&
+            player.y < dataArray[i].y + playerSize &&
+            socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
             console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
             if (player.infected === false && dataArray[i].infected === true) {
               player.infected = true
@@ -87,7 +95,7 @@ io.on('connection', function (socket) {
   });
   socket.on('disconnect', function () {
     delete players[socket.id];
-  })//removes players after disconnect this is a json object, array functions don't work
+  }) //removes players after disconnect this is a json object, array functions don't work
 });
 setInterval(function () {
   io.sockets.emit('state', players);
