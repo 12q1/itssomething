@@ -69,10 +69,14 @@ io.on('connection', function (socket) {
       playerSize = 15 //define player size
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
-      
+
       for (i = 0; i < dataArray.length; i++) { //for each index of dataArray 
-        if (player.x + playerSize > dataArray[i].x && player.x < dataArray[i].x + playerSize && socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
-          if (player.y + playerSize > dataArray[i].y && player.y < dataArray[i].y + playerSize && socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
+        if (player.x + playerSize > dataArray[i].x &&
+          player.x < dataArray[i].x + playerSize &&
+          socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
+          if (player.y + playerSize > dataArray[i].y &&
+            player.y < dataArray[i].y + playerSize &&
+            socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
             console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
             if (player.infected === false && dataArray[i].infected === true) {
               player.infected = true
