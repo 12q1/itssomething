@@ -38,6 +38,7 @@ var players = {};
 io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
+      socket:socket.id,
       x: 500,
       y: 300, //these coordinates are the starting position of a player
       color: playerColors[getRandomNumber(playerColors.length)],
@@ -64,11 +65,10 @@ io.on('connection', function (socket) {
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
       for(i=0;i<dataArray.length;i++){ //for each index of dataArray 
-        if(player.x===dataArray[i].x&&socket.id!==socketArray[i]){
-          console.log('a collision has occurred on the x axis')
+        if(player.x>dataArray[i].x&&player.x<dataArray[i].x+playerSize&&socket.id!==socketArray[i]){ //if player x is the same as one of the data packets and the socketIDs don't match
+          if(player.y>dataArray[i].y&&player.y<dataArray[i].y+playerSize&&socket.id!==socketArray[i]){ //if player y is the same as one of the data packets and the socketIDs don't match
+          console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}` )
         }
-        if(player.y===dataArray[i].y&&socket.id!==socketArray[i]){
-          console.log('a collision has occurred on the y axis')
         }
       }
     }
