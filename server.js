@@ -47,7 +47,8 @@ io.on('connection', function (socket) {
       y: getRandomNumber(canvasHeight), //these coordinates are the starting position of a player
       color: 'SkyBlue',
       infected: false,
-      speed: 5
+      speed: 5,
+      size:20
     };
   });
 
@@ -58,20 +59,20 @@ io.on('connection', function (socket) {
       player.color = 'Tomato'
     }
     if (data.left && player.x > 0) {
-      if (player.infected === true) player.x -= player.speed+1; //infected move at a speed of 7 non-infected move at a speed of 5
-      player.x -= player.speed; //these numbers control movement speed higher = faster 
+      if (player.infected === true) player.x -= player.speed; //infected move at a speed of 7 non-infected move at a speed of 5
+      else {player.x -= player.speed;} //these numbers control movement speed higher = faster 
     }
     if (data.up && player.y > 0) {
-      if (player.infected === true) player.y -= player.speed+1;
-      player.y -= player.speed;
+      if (player.infected === true) player.y -= player.speed
+      else {player.y -= player.speed;}
     }
     if (data.right && player.x < canvasWidth-playerSize) {
-      if (player.infected === true) player.x += player.speed+1;
-      player.x += player.speed;
+      if (player.infected === true) player.x += player.speed;
+      else {player.x += player.speed;}
     }
     if (data.down && player.y < canvasHeight-playerSize) {
-      if (player.infected === true) player.y += player.speed+1;
-      player.y += player.speed;
+      if (player.infected === true) player.y += player.speed;
+      else{player.y += player.speed;}
     }
     if (players) { //if players exist
       socketArray = Object.keys(players) //create an array of socket IDs
@@ -88,6 +89,7 @@ io.on('connection', function (socket) {
             if (player.infected === false && dataArray[i].infected === true) {
               player.infected = true
               player.color = 'Tomato'
+              player.speed = player.speed+5 //gives infected a +5 speed boost
             }
           }
         }
