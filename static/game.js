@@ -12,7 +12,7 @@ var movement = {
 
 document.addEventListener('keydown', function (event) {
     switch (event.keyCode) {
-        case 65 : // A
+        case 65: // A
             movement.left = true;
             break;
         case 87: // W
@@ -73,23 +73,34 @@ setInterval(function () {
     socket.emit('movement', movement);
 }, 1000 / 60);
 
-var canvas = document.getElementById('canvas');
+const canvas = document.getElementById('canvas');
 canvas.width = 1000;
 canvas.height = 600;
-var context = canvas.getContext('2d');
+const context = canvas.getContext('2d');
 socket.on('state', function (players) {
     //us this console.log if you need to check the player list on client
     //console.log(players)
     context.clearRect(0, 0, 1000, 600); //removes trails
-    for (var id in players) {
-        var player = players[id];
-            context.fillStyle = player.color;
-            context.beginPath();
-            console.log(player)
-            context.rect(player.x, player.y, 15, 15);
-            context.fill();
-            context.fillText(player.name,player.x-7,player.y-5,30)
+    for (let id in players) {
+        let player = players[id];
+        if (player.socket === socket.id) {
+            if(player.infected === false){
+            context.fillStyle = 'white'
             context.fillText(`You are ${player.name}`, 5, 10)
+            }
+            else{
+                context.fillStyle = 'red'
+                context.fillText(`You are ${player.name}`, 5, 10)
+            }
+        } //if socket id is client socket ID make it white
+        else { 
+            context.fillStyle = player.color;
+
+        } //else give them their regular color
+        context.beginPath();
+        context.rect(player.x, player.y, 15, 15);
+        context.fill();
+        context.fillText(player.name, player.x - 10, player.y - 5)
 
     }
 });

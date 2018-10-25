@@ -1,11 +1,11 @@
 // Dependencies
-var express = require('express');
-var http = require('http');
-var path = require('path');
-var socketIO = require('socket.io');
-var app = express();
-var server = http.Server(app);
-var io = socketIO(server);
+const express = require('express');
+const http = require('http');
+const path = require('path');
+const socketIO = require('socket.io');
+const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
 app.set('port', process.env.PORT || 5000);
 app.use('/static', express.static(__dirname + '/static'));
 // Routing
@@ -30,21 +30,22 @@ const getRandomNumber = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 } //end of getRandomNumber: use this to generate a random integer, define the maximum in the parameter
 
+const canvasWidth = 1000
+const canvasHeight = 600
+playerSize = 15 //define player size
+let players = {};
+let number = 1
+let pId = 1
 
-playerColors = ["white", "yellow", "orange","pink"]
-
-var players = {};
-var number = 1
-var pId = 1
 io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
       socket: socket.id,
-      name: "player " + number++,
+      name: "Player " + number++,
       pid: pId++,
-      x: getRandomNumber(900),
-      y: getRandomNumber(500), //these coordinates are the starting position of a player
-      color: playerColors[getRandomNumber(playerColors.length)],
+      x: getRandomNumber(canvasWidth),
+      y: getRandomNumber(canvasHeight), //these coordinates are the starting position of a player
+      color: 'GreenYellow',
       infected: false
     };
   });
@@ -55,24 +56,23 @@ io.on('connection', function (socket) {
       player.infected =true
       player.color = 'red'
     }
-    if (data.left && player.x > 0) { //these numbers control movement speed higher = faster 
+    if (data.left && player.x > 0) {
       if (player.infected === true) player.x -= 7; //infected move at a speed of 7 non-infected move at a speed of 5
-      if(player.infected === false) player.x -= 5;
+      player.x -= 6; //these numbers control movement speed higher = faster 
     }
     if (data.up && player.y > 0) {
       if (player.infected === true) player.y -= 7;
-      if(player.infected === false) player.y -= 5;
+      player.y -= 6;
     }
-    if (data.right && player.x < 985) {
+    if (data.right && player.x < canvasWidth-playerSize) {
       if (player.infected === true) player.x += 7;
-      if(player.infected === false) player.x += 5;
+      player.x += 6;
     }
-    if (data.down && player.y < 585) {
+    if (data.down && player.y < canvasHeight-playerSize) {
       if (player.infected === true) player.y += 7;
-      if(player.infected === false) player.y += 5;
+      player.y += 6;
     }
     if (players) { //if players exist
-      playerSize = 15 //define player size
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
 
