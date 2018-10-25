@@ -86,11 +86,11 @@ socket.on('state', function (players) {
         if (player.socket === socket.id) {
             if(player.infected === false){
             context.fillStyle = 'white'
-            context.fillText(`You are ${player.name}`, 5, 10)
+            context.fillText(`You are ${player.name}`, canvas.width/2, 15)
             }
             else{
                 context.fillStyle = 'red'
-                context.fillText(`You are ${player.name}`, 5, 10)
+                context.fillText(`You are ${player.name}`, canvas.width/2, 15)
             }
         } //if socket id is client socket ID make it white
         else { 
@@ -98,9 +98,10 @@ socket.on('state', function (players) {
 
         } //else give them their regular color
         context.beginPath();
-        context.rect(player.x, player.y, 15, 15);
+        context.rect(player.x, player.y, 20, 20);
         context.fill();
-        context.fillText(player.name, player.x - 10, player.y - 5)
+        context.textAlign ="center"
+        context.fillText(player.name, player.x+10, player.y - 5)
 
     }
 });

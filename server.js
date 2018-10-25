@@ -32,7 +32,7 @@ const getRandomNumber = (max) => {
 
 const canvasWidth = 1000
 const canvasHeight = 600
-playerSize = 15 //define player size
+playerSize = 20 //define player size
 let players = {};
 let number = 1
 let pId = 1
@@ -45,7 +45,7 @@ io.on('connection', function (socket) {
       pid: pId++,
       x: getRandomNumber(canvasWidth),
       y: getRandomNumber(canvasHeight), //these coordinates are the starting position of a player
-      color: 'GreenYellow',
+      color: 'GreenYellow ',
       infected: false
     };
   });
@@ -54,7 +54,7 @@ io.on('connection', function (socket) {
     var player = players[socket.id] || {};
     if (player.pid%2===0){
       player.infected =true
-      player.color = 'red'
+      player.color = 'DarkRed'
     }
     if (data.left && player.x > 0) {
       if (player.infected === true) player.x -= 7; //infected move at a speed of 7 non-infected move at a speed of 5
@@ -86,7 +86,7 @@ io.on('connection', function (socket) {
             console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
             if (player.infected === false && dataArray[i].infected === true) {
               player.infected = true
-              player.color = 'red'
+              player.color = 'DarkRed'
             }
           }
         }
