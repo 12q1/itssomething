@@ -83,20 +83,13 @@ socket.on('state', function (players) {
     context.clearRect(0, 0, 1000, 600); //removes trails
     for (var id in players) {
         var player = players[id];
-        if (player.pid%2===0){
-            player.infected =true
-            context.fillStyle = "red";
-            context.beginPath();
-            console.log(player)
-            context.rect(player.x, player.y, 30, 30);
-            context.fill();
-        }
-        else{
             context.fillStyle = player.color;
             context.beginPath();
             console.log(player)
             context.rect(player.x, player.y, 15, 15);
             context.fill();
-        }
+            context.fillText(player.name,player.x-7,player.y-5,30)
+            context.fillText(`You are ${player.name}`, 5, 10)
+
     }
 });
