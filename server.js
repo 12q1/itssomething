@@ -35,11 +35,13 @@ playerColors = ["white", "yellow", "blue", "black", "orange"]
 
 var players = {};
 var number = 0
+var pId=1
 io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
       socket: socket.id,
       name: "player" + number++,
+      pid:pId++,
       x: getRandomNumber(800),
       y: getRandomNumber(400), //these coordinates are the starting position of a player
       color: playerColors[getRandomNumber(playerColors.length)],
@@ -50,26 +52,29 @@ io.on('connection', function (socket) {
   socket.on('movement', function (data) {
     var player = players[socket.id] || {};
     if (data.left && player.x > 0) { //these numbers control movement speed higher = faster 
-      if (player.infected === true) player.x -= 7; //infected move at a speed of 7 non-infected move at a speed of 5
-      player.x -= 5;
+      if (player.infected === true){
+        player.x -= 7 
+      }
+       //infected move at a speed of 7 non-infected move at a speed of 5
+      else {player.x -= 2}
     }
     if (data.up && player.y > 0) {
-      if (player.infected === true) player.y -= 7;
-      player.y -= 5;
+      if (player.infected === true) return  player.y -= 7;
+      else player.y -= 2;
     }
     if (data.right && player.x < 985) {
-      if (player.infected === true) player.x += 7;
-      player.x += 5;
+      if (player.infected === true) return player.x += 7;
+      else player.x += 2;
     }
     if (data.down && player.y < 585) {
-      if (player.infected === true) player.y += 7;
-      player.y += 5;
+      if (player.infected === true) return  player.y += 7;
+      else player.y += 2;
     }
     if (players) { //if players exist
       playerSize = 15 //define player size
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
-
+      
       for (i = 0; i < dataArray.length; i++) { //for each index of dataArray 
         if (player.x + playerSize > dataArray[i].x &&
           player.x < dataArray[i].x + playerSize &&
