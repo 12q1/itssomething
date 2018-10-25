@@ -1,9 +1,9 @@
-var socket = io();
+let socket = io();
 socket.on('message', function (data) {
     console.table(data);
 });
 
-var movement = {
+let movement = {
     up: false,
     down: false,
     left: false,

@@ -45,32 +45,33 @@ io.on('connection', function (socket) {
       pid: pId++,
       x: getRandomNumber(canvasWidth),
       y: getRandomNumber(canvasHeight), //these coordinates are the starting position of a player
-      color: 'GreenYellow ',
-      infected: false
+      color: 'SkyBlue',
+      infected: false,
+      speed: 5
     };
   });
 
   socket.on('movement', function (data) {
-    var player = players[socket.id] || {};
+    let player = players[socket.id] || {};
     if (player.pid%2===0){
       player.infected =true
-      player.color = 'DarkRed'
+      player.color = 'Tomato'
     }
     if (data.left && player.x > 0) {
-      if (player.infected === true) player.x -= 7; //infected move at a speed of 7 non-infected move at a speed of 5
-      player.x -= 6; //these numbers control movement speed higher = faster 
+      if (player.infected === true) player.x -= player.speed+1; //infected move at a speed of 7 non-infected move at a speed of 5
+      player.x -= player.speed; //these numbers control movement speed higher = faster 
     }
     if (data.up && player.y > 0) {
-      if (player.infected === true) player.y -= 7;
-      player.y -= 6;
+      if (player.infected === true) player.y -= player.speed+1;
+      player.y -= player.speed;
     }
     if (data.right && player.x < canvasWidth-playerSize) {
-      if (player.infected === true) player.x += 7;
-      player.x += 6;
+      if (player.infected === true) player.x += player.speed+1;
+      player.x += player.speed;
     }
     if (data.down && player.y < canvasHeight-playerSize) {
-      if (player.infected === true) player.y += 7;
-      player.y += 6;
+      if (player.infected === true) player.y += player.speed+1;
+      player.y += player.speed;
     }
     if (players) { //if players exist
       socketArray = Object.keys(players) //create an array of socket IDs
