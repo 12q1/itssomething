@@ -32,17 +32,17 @@ const getRandomNumber = (max) => {
 } //end of getRandomNumber: use this to generate a random integer, define the maximum in the parameter
 
 
-playerColors=["red","white","yellow","blue","black","orange"]
+playerColors = ["white", "yellow", "blue", "black", "orange"]
 
 var players = {};
 io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
-      socket:socket.id,
+      socket: socket.id,
       x: 500,
       y: 300, //these coordinates are the starting position of a player
       color: playerColors[getRandomNumber(playerColors.length)],
-      infected:false
+      infected: false
     };
   });
 
@@ -60,15 +60,19 @@ io.on('connection', function (socket) {
     if (data.down && player.y < 585) {
       player.y += 7;
     }
-    if (players){ //if players exist
+    if (players) { //if players exist
       playerSize = 15 //define player size
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
-      for(i=0;i<dataArray.length;i++){ //for each index of dataArray 
-        if(player.x>dataArray[i].x&&player.x<dataArray[i].x+playerSize&&socket.id!==socketArray[i]){ //if player x is the same as one of the data packets and the socketIDs don't match
-          if(player.y>dataArray[i].y&&player.y<dataArray[i].y+playerSize&&socket.id!==socketArray[i]){ //if player y is the same as one of the data packets and the socketIDs don't match
-          console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}` )
-        }
+      for (i = 0; i < dataArray.length; i++) { //for each index of dataArray 
+        if (player.x+playerSize > dataArray[i].x && player.x < dataArray[i].x + playerSize && socket.id !== socketArray[i]) { //if player x is the same as one of the data packets and the socketIDs don't match
+          if (player.y+playerSize > dataArray[i].y && player.y < dataArray[i].y + playerSize && socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
+            console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
+            if(player.infected===false&&socketArray[i].infected===true){
+              player.infected = true
+              player.color = 'red'
+            }
+          }
         }
       }
     }
