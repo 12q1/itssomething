@@ -43,8 +43,6 @@ io.on('connection', function (socket) {
       name: "player"+number++,
       x: getRandomNumber(800),
       y: getRandomNumber(400), //these coordinates are the starting position of a player
-      width:15,
-      height:15,
       color: playerColors[getRandomNumber(playerColors.length)],
       infected: false
     };
