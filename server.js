@@ -55,17 +55,21 @@ io.on('connection', function (socket) {
       player.infected =true
       player.color = 'red'
     }
-    if (data.left && player.x > 0) { //these numbers control movement speed higher = faster  //infected move at a speed of 7 non-infected move at a speed of 5
-      player.x -= 3;
+    if (data.left && player.x > 0) { //these numbers control movement speed higher = faster 
+      if (player.infected === true) player.x -= 7; //infected move at a speed of 7 non-infected move at a speed of 5
+      if(player.infected === false) player.x -= 5;
     }
     if (data.up && player.y > 0) {
-      player.y -= 3;
+      if (player.infected === true) player.y -= 7;
+      if(player.infected === false) player.y -= 5;
     }
     if (data.right && player.x < 985) {
-      player.x += 3;
+      if (player.infected === true) player.x += 7;
+      if(player.infected === false) player.x += 5;
     }
     if (data.down && player.y < 585) {
-      player.y += 3;
+      if (player.infected === true) player.y += 7;
+      if(player.infected === false) player.y += 5;
     }
     if (players) { //if players exist
       playerSize = 15 //define player size
