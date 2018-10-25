@@ -44,9 +44,6 @@ io.on('connection', function (socket) {
       infected:false
     };
   });
-  socket.on('collision',function(){
-    console.log(players)
-  })
 
   socket.on('movement', function (data) {
     var player = players[socket.id] || {};
@@ -62,9 +59,21 @@ io.on('connection', function (socket) {
     if (data.down && player.y < 585) {
       player.y += 7;
     }
+    if (players){ //if players exist
+      playerSize = 15 //define player size
+      socketArray = Object.keys(players) //create an array of socket IDs
+      dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
+      for(i=0;i<dataArray.length;i++){ //for each index of dataArray 
+        if(player.x===dataArray[i].x&&socket.id!==socketArray[i]){
+          console.log('a collision has occurred on the x axis')
+        }
+        if(player.y===dataArray[i].y&&socket.id!==socketArray[i]){
+          console.log('a collision has occurred on the y axis')
+        }
+      }
+    }
   });
   socket.on('disconnect', function () {
-    socket.emit('user disconnected', socket.id)
     delete players[socket.id];
   })//removes players after disconnect this is a json object, array functions don't work
 });
