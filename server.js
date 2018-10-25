@@ -35,12 +35,16 @@ const getRandomNumber = (max) => {
 playerColors = ["white", "yellow", "blue", "black", "orange"]
 
 var players = {};
+var number = 0
 io.on('connection', function (socket) {
   socket.on('new player', function () {
     players[socket.id] = {
       socket: socket.id,
-      x: 500,
-      y: 300, //these coordinates are the starting position of a player
+      name: "player"+number++,
+      x: getRandomNumber(800),
+      y: getRandomNumber(400), //these coordinates are the starting position of a player
+      width:15,
+      height:15,
       color: playerColors[getRandomNumber(playerColors.length)],
       infected: false
     };
