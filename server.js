@@ -78,7 +78,7 @@ io.on('connection', function (socket) {
       if (socketArray.length > 1 && infectionSeed === false||socket.length>=2&&numberOfInfected===0){ //if there is more than 1 player and there are no infected...
         console.log("Conditions for an infection have been met - picking a victim")
         chosenOne = socketArray[getRandomNumber(socketArray.length)]
-        console.log(socketArray)
+        //console.log(socketArray)
         console.log(`${chosenOne} is the chosen one`)
         players[chosenOne].infected = true //random player becomes infected
         players[chosenOne].color = 'Tomato'

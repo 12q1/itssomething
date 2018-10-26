@@ -92,6 +92,11 @@
       bottom: 0;
       width: 100%;
     }
+
+    .footerContent{
+      margin-top: 5px;
+    }
+    
   </style>
   <script src="/socket.io/socket.io.js"></script>
 </head>
@@ -103,7 +108,9 @@
   <div id="canvas-container"></div>
   <canvas id="canvas"></canvas>
   <div class="footer">
-    Use your arrow or WASD keys to move around. Try to avoid getting infected. Created by Yuga & Thomas.
+    <div class='footerContent'>
+        Use your arrow or WASD keys to move around. Try to avoid getting infected. Created by Yuga & Thomas.
+    </div>
   </div>
   <script src="/static/game.js"></script>
 </body>
