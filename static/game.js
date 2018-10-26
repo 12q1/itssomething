@@ -87,11 +87,13 @@ socket.on('state', function (players) {
         if (player.socket === socket.id) {
             if(player.infected === false){
             context.fillStyle = 'white'
-            context.fillText(`You are ${player.name}, try to avoid the Infected`, canvas.width/2, 15)
+            context.font=" bold 30px Amatic SC";
+            context.fillText(`You are ${player.name}, try to avoid the Infected`, canvas.width/2, 30)
             }
             else{
                 context.fillStyle = 'red'
-                context.fillText(`You are Infected, try to get everyone else`, canvas.width/2, 15)
+                context.font=" bold 30px Amatic SC";
+                context.fillText(`You are Infected, try to get everyone else`, canvas.width/2, 30)
             }
         } //if socket id is client socket ID make it white
         else { 
@@ -102,6 +104,10 @@ socket.on('state', function (players) {
         context.rect(player.x, player.y, 20, 20);
         context.fill();
         context.textAlign ="center"
+        
+
+        context.beginPath()
+        context.font=" bold 20px Amatic SC";
         context.fillText(player.name, player.x+10, player.y - 5)
 
     }
