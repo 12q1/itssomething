@@ -89,7 +89,7 @@ io.on('connection', function (socket) {
       //console.log(numberOfInfected, socketArray.length)
       if (numberOfInfected > 1 && infectionSeed === true) {
         if (numberOfInfected === socketArray.length) { //if all endgame conditions are met...reset everything
-          console.log("game over")
+          console.log("Everyone is infected game over")
           resetPositions = dataArray.map(index=>{
             index.x=getRandomNumber(canvasWidth-playerSize)
             index.y=getRandomNumber(canvasHeight-playerSize)

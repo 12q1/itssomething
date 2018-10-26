@@ -87,11 +87,11 @@ socket.on('state', function (players) {
         if (player.socket === socket.id) {
             if(player.infected === false){
             context.fillStyle = 'white'
-            context.fillText(`You are ${player.name}`, canvas.width/2, 15)
+            context.fillText(`You are ${player.name}, try to avoid the Infected`, canvas.width/2, 15)
             }
             else{
                 context.fillStyle = 'red'
-                context.fillText(`You are ${player.name}`, canvas.width/2, 15)
+                context.fillText(`You are Infected, try to get everyone else`, canvas.width/2, 15)
             }
         } //if socket id is client socket ID make it white
         else { 
