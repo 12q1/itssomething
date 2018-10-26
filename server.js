@@ -75,7 +75,7 @@ io.on('connection', function (socket) {
     if (players) { //if players exist
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
-      if (socketArray.length > 1 && infectionSeed === false) { //if there is more than 1 player and there are no infected...
+      if (socketArray.length > 1 && infectionSeed === false||socket.length>=2&&numberOfInfected===0){ //if there is more than 1 player and there are no infected...
         console.log("Conditions for an infection have been met - picking a victim")
         chosenOne = socketArray[getRandomNumber(socketArray.length)]
         console.log(socketArray)
@@ -85,7 +85,13 @@ io.on('connection', function (socket) {
         infectionSeed = true
         numberOfInfected++
       }
-      
+      checkInfected = dataArray.filter(data => data.infected===true).length
+      if(socketArray.length>1&&checkInfected<1){
+        infectionSeed = false
+        numberOfInfected = checkInfected
+      }
+
+
       //console.log(numberOfInfected, socketArray.length)
       if (numberOfInfected > 1 && infectionSeed === true) {
         if (numberOfInfected === socketArray.length) { //if all endgame conditions are met...reset everything

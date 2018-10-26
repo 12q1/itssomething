@@ -106,9 +106,9 @@ socket.on('state', function (players) {
         context.textAlign ="center"
         
 
-        context.beginPath()
-        context.font=" bold 20px Amatic SC";
-        context.fillText(player.name, player.x+10, player.y - 5)
+        // context.beginPath()
+        // context.font=" bold 20px Amatic SC";
+        // context.fillText(player.name, player.x+10, player.y - 5)
 
     }
 });
