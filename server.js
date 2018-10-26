@@ -32,7 +32,7 @@ const getRandomNumber = (max) => {
 
 const canvasWidth = 1000
 const canvasHeight = 600
-playerSize = 20 //define player size
+const playerSize = 20 //define player size
 let players = {};
 let number = 1
 let pId = 1
@@ -86,7 +86,7 @@ io.on('connection', function (socket) {
         numberOfInfected++
       }
       
-      console.log(numberOfInfected, socketArray.length)
+      //console.log(numberOfInfected, socketArray.length)
       if (numberOfInfected > 1 && infectionSeed === true) {
         if (numberOfInfected === socketArray.length) { //if all endgame conditions are met...reset everything
           console.log("Everyone is infected game over")
