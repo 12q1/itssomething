@@ -86,7 +86,7 @@ io.on('connection', function (socket) {
         numberOfInfected++
       }
       
-      //console.log(numberOfInfected, socketArray.length)
+      console.log(numberOfInfected, socketArray.length)
       if (numberOfInfected > 1 && infectionSeed === true) {
         if (numberOfInfected === socketArray.length) { //if all endgame conditions are met...reset everything
           console.log("Everyone is infected game over")
