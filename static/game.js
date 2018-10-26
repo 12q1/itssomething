@@ -81,6 +81,7 @@ socket.on('state', function (players) {
     //us this console.log if you need to check the player list on client
     //console.log(players)
     context.clearRect(0, 0, 1000, 600); //removes trails
+    //console.table(players)
     for (let id in players) {
         let player = players[id];
         if (player.socket === socket.id) {

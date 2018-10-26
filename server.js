@@ -36,6 +36,8 @@ playerSize = 20 //define player size
 let players = {};
 let number = 1
 let pId = 1
+let infectionSeed = false
+let numberOfInfected = 0
 
 io.on('connection', function (socket) {
   socket.on('new player', function () {
@@ -47,37 +49,62 @@ io.on('connection', function (socket) {
       y: getRandomNumber(canvasHeight), //these coordinates are the starting position of a player
       color: 'SkyBlue',
       infected: false,
-      speed: 5,
-      size:20
+      speed: 6,
+      size: 20
     };
   });
 
   socket.on('movement', function (data) {
     let player = players[socket.id] || {};
-    if (player.pid%2===0){
-      player.infected =true
-      player.color = 'Tomato'
-    }
+    // if (player.pid%2===0){
+    //   player.infected =true
+    //   player.color = 'Tomato'
+    // }
     if (data.left && player.x > 0) {
       if (player.infected === true) player.x -= player.speed; //infected move at a speed of 7 non-infected move at a speed of 5
-      else {player.x -= player.speed;} //these numbers control movement speed higher = faster 
+      else { player.x -= player.speed; } //these numbers control movement speed higher = faster 
     }
     if (data.up && player.y > 0) {
       if (player.infected === true) player.y -= player.speed
-      else {player.y -= player.speed;}
+      else { player.y -= player.speed; }
     }
-    if (data.right && player.x < canvasWidth-playerSize) {
+    if (data.right && player.x < canvasWidth - player.size) {
       if (player.infected === true) player.x += player.speed;
-      else {player.x += player.speed;}
+      else { player.x += player.speed; }
     }
-    if (data.down && player.y < canvasHeight-playerSize) {
+    if (data.down && player.y < canvasHeight - player.size) {
       if (player.infected === true) player.y += player.speed;
-      else{player.y += player.speed;}
+      else { player.y += player.speed; }
     }
     if (players) { //if players exist
       socketArray = Object.keys(players) //create an array of socket IDs
       dataArray = Object.values(players) //create an array of data objects (eg. xcoords/ycoords)
-
+      if (socketArray.length > 1 && infectionSeed === false) { //if there is more than 1 player and there are no infected...
+        console.log("Conditions for an infection have been met - picking a victim")
+        chosenOne = socketArray[getRandomNumber(socketArray.length)]
+        console.log(socketArray)
+        console.log(`${chosenOne} is the chosen one`)
+        players[chosenOne].infected = true //random player becomes infected
+        players[chosenOne].color = 'Tomato'
+        infectionSeed = true
+        numberOfInfected++
+      }
+      
+      //console.log(numberOfInfected, socketArray.length)
+      if (numberOfInfected > 1 && infectionSeed === true) {
+        if (numberOfInfected === socketArray.length) {
+          console.log("game over")
+          resetPositions = dataArray.map(index=>{
+            index.x=getRandomNumber(canvasWidth)
+            index.y=300
+            index.infected = false
+            index.color = 'SkyBlue'
+          })
+          //players = {}
+          infectionSeed = false
+          numberOfInfected = 0
+        }
+      }
       for (i = 0; i < dataArray.length; i++) { //for each index of dataArray 
         if (player.x + playerSize > dataArray[i].x &&
           player.x < dataArray[i].x + playerSize &&
@@ -85,11 +112,12 @@ io.on('connection', function (socket) {
           if (player.y + playerSize > dataArray[i].y &&
             player.y < dataArray[i].y + playerSize &&
             socket.id !== socketArray[i]) { //if player y is the same as one of the data packets and the socketIDs don't match
-            console.log(`a collision has occurred on both axis between ${player.socket} and ${socketArray[i]}`)
             if (player.infected === false && dataArray[i].infected === true) {
+              console.log(`${player.name} has become infected`)
               player.infected = true
               player.color = 'Tomato'
-              player.speed = player.speed+5 //gives infected a +5 speed boost
+              player.speed = player.speed + 2 //gives infected a +2 speed boost
+              numberOfInfected++
             }
           }
         }
