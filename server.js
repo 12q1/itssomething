@@ -56,10 +56,6 @@ io.on('connection', function (socket) {
 
   socket.on('movement', function (data) {
     let player = players[socket.id] || {};
-    // if (player.pid%2===0){
-    //   player.infected =true
-    //   player.color = 'Tomato'
-    // }
     if (data.left && player.x > 0) {
       if (player.infected === true) player.x -= player.speed; //infected move at a speed of 7 non-infected move at a speed of 5
       else { player.x -= player.speed; } //these numbers control movement speed higher = faster 
@@ -92,13 +88,14 @@ io.on('connection', function (socket) {
       
       //console.log(numberOfInfected, socketArray.length)
       if (numberOfInfected > 1 && infectionSeed === true) {
-        if (numberOfInfected === socketArray.length) {
+        if (numberOfInfected === socketArray.length) { //if all endgame conditions are met...reset everything
           console.log("game over")
           resetPositions = dataArray.map(index=>{
-            index.x=getRandomNumber(canvasWidth)
-            index.y=300
+            index.x=getRandomNumber(canvasWidth-playerSize)
+            index.y=getRandomNumber(canvasHeight-playerSize)
             index.infected = false
             index.color = 'SkyBlue'
+            index.speed = 6
           })
           //players = {}
           infectionSeed = false
